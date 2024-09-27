@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        form input, form select, form button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #218838;
+        }
+
+        .expense-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .expense-table th, .expense-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .expense-table th {
+            background-color: #f8f8f8;
+        }
+
+        .total-amount {
+            text-align: left;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Personal Finance Manager</h1>
+        <div class="total-amount">
+            <b>Balance:</b> $<span id="total-amount">0</span>
+        </div>
+        <form id="expense-form">
+            <input type="text" id="expense-name" placeholder="Description" required />
+            <input type="number" id="expense-amount" placeholder="Amount" required />
+            <select id="expense-category" required>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+            <button type="submit">Add Transaction</button>
+        </form>
+        <div class="expense-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="task-list"></tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById("expense-form");
+        const amountInput = document.getElementById("expense-amount");
+        const descriptionInput = document.getElementById("expense-name");
+        const categorySelect = document.getElementById("expense-category");
+        const taskList = document.getElementById("task-list");
+        const totalAmount = document.getElementById("total-amount");
+
+        let balance = 0;
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const description = descriptionInput.value.trim();
+            const amount = parseFloat(amountInput.value);
+            const category = categorySelect.value;
+
+            if (description && !isNaN(amount)) {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${description}</td>
+                    <td>$${amount.toFixed(2)}</td>
+                    <td>${category}</td>
+                    <td><button class="delete-btn">Delete</button></td>
+                `;
+                
+                taskList.appendChild(row);
+                balance += (category === "income" ? amount : -amount);
+                totalAmount.textContent = balance.toFixed(2);
+                descriptionInput.value = '';
+                amountInput.value = '';
+                categorySelect.value = 'income'; 
+            }
+        });
+
+        taskList.addEventListener("click", (event) => {
+            if (event.target.classList.contains("delete-btn")) {
+                const row = event.target.closest("tr");
+                const amount = parseFloat(row.children[1].textContent.replace('$', ''));
+                balance -= (row.children[2].textContent === 'Income' ? amount : -amount);
+                totalAmount.textContent = balance.toFixed(2);
+                taskList.removeChild(row);
+            }
+        });
+    </script>
+</body>
+</html>
