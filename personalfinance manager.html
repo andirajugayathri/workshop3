@@ -1,0 +1,126 @@
+<DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            body {
+               font-family: Arial, sans-serif;
+               background-color: #f0f0f0;
+               margin: 0;
+               padding: 0;
+            }
+    
+            .container {
+                 max-width: 800px;
+                 margin: 50px auto;
+                 padding: 20px;
+                 background-color: #fff;
+                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                 border-radius: 8px;
+            }
+    
+            h1 {
+               text-align: center;
+               margin-bottom: 20px;
+            }
+    
+            form {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+           form input, form select, form button {
+              padding: 10px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            }
+    
+           form button {
+                background-color: #28a745;
+                color: white;
+                border: none;
+                cursor: pointer;
+        }
+    
+        form button:hover {
+              background-color: #218838;
+        }
+    
+        .expense-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+    
+        .expense-table th, .expense-table td {
+            padding: 10px;
+           border: 1px solid #ddd;
+           text-align: left;
+        }
+    
+        .expense-table th {
+            background-color: #f8f8f8;
+        }
+    
+       .total-amount {
+           text-align: left;
+           font-size: 18px;
+        }
+    
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Personal Finance Manager</h1>
+            <div class="total-amount">
+                <b>Balance:</b> $<span id="total-amount">0</span>
+            </div>
+            <form id="expense-form">
+                <input type="text" id="expense-name" placeholder="Description" required />
+                <input type="number" id="expense-amount" placeholder="Amount" required />
+                <select id="expense-category" required>
+                    <option value="income">income</option>
+                    <option value="expensive">expensive</option>
+                    <option value="Other">Other</option>
+                </select>
+                <button type="submit">Add Transaction</button>
+            </form>
+            <div class="expense-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    
+                </table>
+                <ul id="task-list"></ul>
+            </div>
+            
+        </div>
+        <script>
+        const Input= document.getElementById("expense-form");
+        const Number= document.getElementById("expense-amount");
+        const List = document.getElementById("task-list");
+        const Amount = document.getElementById("total-amount");
+    
+        document.getElementById('button').addEventListener('click', () => {
+          if (Input.value.trim()) {
+            const li = document.createElement('li');
+            li.innerHTML = ${Input.value} 
+            li.innerHTML = ${Number.value}
+            <button class="delete-btn">Delete</button>;
+            List.appendChild(li);
+            Input.value = '';
+            li.querySelector('.delete-btn').addEventListener('click', () => List.removeChild(li));
+          }
+        });
+        Input.addEventListener('keypress', (e) => e.key === 'Enter' && document.getElementById('add-task-btn').click());
+       </script>
+       </body>
+       </html>
